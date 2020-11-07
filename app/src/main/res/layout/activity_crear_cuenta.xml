@@ -7,6 +7,16 @@
     android:background="@color/purple_pers"
     tools:context=".CrearCuenta">
 
+    <ImageView
+        android:id="@+id/imageViewClose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close" />
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
