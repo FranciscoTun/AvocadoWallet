@@ -10,8 +10,9 @@ public class Ingresar extends AppCompatActivity {
     Button btnIngrersar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingresar);
+        super.onCreate(savedInstanceState);
+        Init();
     }
 
     public void Init(){
