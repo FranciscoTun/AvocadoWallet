@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         tCrearCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent();
+                Intent i = new Intent(getApplicationContext(), CrearCuenta.class);
                 startActivity(i);
             }
         });
