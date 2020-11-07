@@ -19,7 +19,7 @@ public class Ingresar extends AppCompatActivity {
         btnIngrersar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //En esta seccion debo validar las credenciales del usiario al igual que conectarme con blockchain jsdbcvkjjsdbfkjsdf
+                //En esta seccion debo validar las credenciales del usiario al igual que conectarme con blockchain jsdbcvkjjsdbfkjsdfjhjh
             }
         });
     }
