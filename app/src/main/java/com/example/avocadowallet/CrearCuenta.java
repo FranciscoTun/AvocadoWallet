@@ -40,7 +40,7 @@ public class CrearCuenta extends AppCompatActivity {
         //INSTANCIAS
         btnSiguiente = (Button)findViewById(R.id.btnSiguiente);
         imgClose = (ImageView)findViewById(R.id.imageViewClose);
-        btnCrearCuenta = (Button)findViewById(R.id.btnCrearCuenta);
+
 
         ETNombre = (EditText)findViewById(R.id.EdiTexNombre);
         ETApellido = (EditText)findViewById(R.id.EdiTextApellidos);
@@ -65,21 +65,26 @@ public class CrearCuenta extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(ETNombre.getText().toString().isEmpty() || ETApellido.getText().toString().isEmpty()){
-                    Toast.makeText(getApplicationContext(),"No deje campos vacíos", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(),"No deje campos vacíos", Toast.LENGTH_SHORT).show();
                 }else {
                     setContentView(R.layout.activity_crear_cuenta_paso2);
+                    btnCrearCuenta = (Button)findViewById(R.id.btnCrearCuenta);
+                    btnCrearCuenta.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CrearCuenta();
+                            ///En este apartado se crea un nuevo usuario y se manda a la base de datos
+                        }
+                    });
+
                 }
 
             }
         });
 
-        btnCrearCuenta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CrearCuenta();
-                ///En este apartado se crea un nuevo usuario y se manda a la base de datos
-            }
-        });
+
+
+
     }
 
 
