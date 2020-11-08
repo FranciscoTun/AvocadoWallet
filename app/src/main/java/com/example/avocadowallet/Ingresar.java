@@ -2,6 +2,8 @@ package com.example.avocadowallet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +12,7 @@ public class Ingresar extends AppCompatActivity {
     Button btnIngrersar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_ingresar);
         super.onCreate(savedInstanceState);
         Init();
@@ -20,7 +23,8 @@ public class Ingresar extends AppCompatActivity {
         btnIngrersar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //En esta seccion debo validar las credenciales del usiario al igual que conectarme con blockchain.
+                Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
+                startActivity(i);
             }
         });
     }
