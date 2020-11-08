@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/EdiTextEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -60,10 +60,10 @@
         android:layout_marginTop="8dp"
         android:text="Confirmar correo electrónico"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        app:layout_constraintTop_toBottomOf="@+id/EdiTextEmail" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress2"
+        android:id="@+id/EdiTextConfirmEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -82,10 +82,10 @@
         android:layout_marginTop="8dp"
         android:text="Número de Teléfono"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress2" />
+        app:layout_constraintTop_toBottomOf="@+id/EdiTextConfirmEmail" />
 
     <EditText
-        android:id="@+id/editTextPhone"
+        android:id="@+id/EdiTextPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -104,10 +104,10 @@
         android:layout_marginTop="32dp"
         android:text="Defina una contraseña para esta aplicación"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+        app:layout_constraintTop_toBottomOf="@+id/EdiTextPhone" />
 
     <EditText
-        android:id="@+id/editTextTextPassword2"
+        android:id="@+id/EdiTextPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -126,10 +126,10 @@
         android:layout_marginTop="8dp"
         android:text="Repetir contraseña"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/EdiTextPass" />
 
     <EditText
-        android:id="@+id/editTextTextPassword3"
+        android:id="@+id/EdiTextConfirmPass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -141,7 +141,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/checkBoxAcuerdo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -150,7 +150,7 @@
         android:text="Comprendo y Acepto que mis datos seran usados de acuerdo a la política de seguridad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword3" />
+        app:layout_constraintTop_toBottomOf="@+id/EdiTextConfirmPass" />
 
     <Button
         android:id="@+id/btnCrearCuenta"
@@ -160,7 +160,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxAcuerdo" />
 
 
 

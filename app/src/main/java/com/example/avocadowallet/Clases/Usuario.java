@@ -3,6 +3,7 @@ package com.example.avocadowallet.Clases;
 import java.util.Date;
 
 public class Usuario {
+    int idUsuario;
     String Username;
     String Name;
     String Lastname;
@@ -10,6 +11,7 @@ public class Usuario {
     String Phone;
     String Password;
     int status;
+    double monto;
     //int edad;
     //Date fecnac;
 
@@ -17,7 +19,8 @@ public class Usuario {
 
     }
 
-    public Usuario(String username, String name, String lastname, String email, String phone, String password, int status ) {
+    public Usuario(int idUsuario, String username, String name, String lastname, String email, String phone, String password, int status, double monto ) {
+        this.idUsuario = idUsuario;
         Username = username;
         Name = name;
         Lastname = lastname;
@@ -25,6 +28,7 @@ public class Usuario {
         Phone = phone;
         Password = password;
         this.status = status;
+        this.monto = monto;
 
     }
 
@@ -84,6 +88,19 @@ public class Usuario {
         this.status = status;
     }
 
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
+    public double getMonto() {
+        return monto;
+    }
+
+    public void setMonto(double monto) {
+        this.monto = monto;
+    }
 }
