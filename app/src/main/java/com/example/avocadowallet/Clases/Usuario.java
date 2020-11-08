@@ -10,14 +10,14 @@ public class Usuario {
     String Phone;
     String Password;
     int status;
-    int edad;
-    Date fecnac;
+    //int edad;
+    //Date fecnac;
 
     public Usuario(){
 
     }
 
-    public Usuario(String username, String name, String lastname, String email, String phone, String password, int status, int edad, Date fecnac) {
+    public Usuario(String username, String name, String lastname, String email, String phone, String password, int status ) {
         Username = username;
         Name = name;
         Lastname = lastname;
@@ -25,8 +25,7 @@ public class Usuario {
         Phone = phone;
         Password = password;
         this.status = status;
-        this.edad = edad;
-        this.fecnac = fecnac;
+
     }
 
     public String getUsername() {
@@ -85,19 +84,6 @@ public class Usuario {
         this.status = status;
     }
 
-    public int getEdad() {
-        return edad;
-    }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
 
-    public Date getFecnac() {
-        return fecnac;
-    }
-
-    public void setFecnac(Date fecnac) {
-        this.fecnac = fecnac;
-    }
 }
