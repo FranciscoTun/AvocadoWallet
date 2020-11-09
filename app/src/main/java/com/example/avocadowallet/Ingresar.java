@@ -67,7 +67,7 @@ public class Ingresar extends AppCompatActivity {
 
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url =Values.URL+"user="+user+"&pwd="+pwd;
+            String url =Values.URL+"sesion.php?user="+user+"&pwd="+pwd;
 
             // Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {

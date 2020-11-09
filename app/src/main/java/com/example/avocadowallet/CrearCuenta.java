@@ -9,8 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.avocadowallet.Clases.Usuario;
 
 import org.json.JSONException;
@@ -81,6 +88,7 @@ public class CrearCuenta extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
+                                Toast.makeText(getApplicationContext(), "Creando Cuenta", Toast.LENGTH_SHORT).show();
                                 CrearCuenta();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -108,23 +116,42 @@ public class CrearCuenta extends AppCompatActivity {
         user.setEmail(ETEmail.getText().toString());
         user.setPassword(ETPassword.getText().toString());
         user.setPhone(ETPhone.getText().toString());
+        user.setStatus(1);
+        user.setMonto(0);
 
-        JSONObject Jsonuser = new JSONObject();
+        conexion();
 
-        Jsonuser.put("Username", user.getUsername());
-        Jsonuser.put("Name",user.getName());
-        Jsonuser.put("Lastname", user.getLastname());
-        Jsonuser.put("Email", user.getEmail());
-        Jsonuser.put("Phone", user.getPhone());
-        Jsonuser.put("Password", user.getPassword());
-
-        Log.e("Mensaje", ""+Jsonuser);
     }
 
 
 
-    public static void Conexion(){
+    public void conexion(){
         try {
+            //final TextView textView = (TextView) findViewById(R.id.textView4);
+            // ...
+
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto();
+            //Cadena = &status=1&monto=0
+
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // Display the first 500 characters of the response string.
+                    //Excelente
+                    //textView.setText("Response is: "+response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //textView.setText("That didn't work!");
+                }
+            });
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
 
         }catch (Exception e){
 
