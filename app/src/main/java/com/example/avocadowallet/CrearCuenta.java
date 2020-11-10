@@ -119,6 +119,7 @@ public class CrearCuenta extends AppCompatActivity {
         user.setStatus(1);
         user.setMonto(0);
 
+
         conexion();
 
     }
