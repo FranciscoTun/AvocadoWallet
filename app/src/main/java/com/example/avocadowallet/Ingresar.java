@@ -2,8 +2,10 @@ package com.example.avocadowallet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,15 +15,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.avocadowallet.Clases.Usuario;
+import com.example.avocadowallet.Clases.statics.Url;
+import com.example.avocadowallet.dataaccess.remote.SingletonConnection;
 
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.sql.SQLData;
 import java.util.concurrent.ExecutionException;
 
@@ -32,6 +40,7 @@ public class Ingresar extends AppCompatActivity {
     String user ="";
     String pwd ="";
     ProgressBar pgInicioSesion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -48,17 +57,17 @@ public class Ingresar extends AppCompatActivity {
         ETPwd = (EditText)findViewById(R.id.EdiTextPwsInicio);
         btnIngrersar = (Button)findViewById(R.id.btnIngresar);
         pgInicioSesion = (ProgressBar)findViewById(R.id.progBarInicioSesion);
+
         btnIngrersar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = ETUser.getText().toString().toUpperCase();
+                user = ETUser.getText().toString();
                 pwd = ETPwd.getText().toString();
                 iniciarSesion(user,pwd);
+
             }
         });
     }
-
-
 
     public void iniciarSesion(String user, String pwd){
         if(user.isEmpty()|| pwd.isEmpty()){
@@ -73,6 +82,56 @@ public class Ingresar extends AppCompatActivity {
     }
 
 
+    public void conexion2(){
+
+
+        try {
+            JSONObject json = new JSONObject();
+            Usuario us = new Usuario();
+            //Log.e("idPariente",""+spParentesco.getSelectedItemPosition());
+
+
+            json
+                    .put("data", new JSONObject()
+                            .put("user",user)
+                            .put("pwd", pwd)
+                    );
+
+            Log.e("Jeison", ""+json);
+
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                    (Request.Method.GET, Url.INICIARSESION_JSON, json, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject jsonResponse) {
+                            Log.e("Resp", jsonResponse.toString());
+                            if(jsonResponse.length()<3){
+                                Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                                //Contraseña o usuario incorrectos
+                            }else {
+                                //JSONObject jsonResponse = new JSONObject(response);
+                                Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
+                                i.putExtra("response", jsonResponse.toString());
+                                startActivity(i);
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("onErrorResponse", error.getMessage());
+                        }
+                    });
+            jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            SingletonConnection.getInstance(this).addToRequestQueue(jsObjRequest);
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
     public void conexion(){
         try {
             //final TextView textView = (TextView) findViewById(R.id.textView4);
@@ -84,7 +143,7 @@ public class Ingresar extends AppCompatActivity {
 
 
             // Request a string response from the provided URL.
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             // Display the first 500 characters of the response string.
@@ -98,6 +157,7 @@ public class Ingresar extends AppCompatActivity {
                                 Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
                                 i.putExtra("response", response);
                                 startActivity(i);
+                                response="";
                             }
 
 
@@ -112,15 +172,16 @@ public class Ingresar extends AppCompatActivity {
             });
 
             // Add the request to the RequestQueue.
-            queue.add(stringRequest);
+            //queue.add(stringRequest);
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            SingletonConnection.getInstance(this).addToRequestQueue(stringRequest);
+
 
         }catch (Exception e){
 
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
+
+
 }
