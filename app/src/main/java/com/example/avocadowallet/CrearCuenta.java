@@ -2,6 +2,7 @@ package com.example.avocadowallet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,9 @@ import com.example.avocadowallet.Clases.Usuario;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Queue;
+
 public class CrearCuenta extends AppCompatActivity {
 
     //Se va a instanciar una nueva clase de tipo usuario y se agregara cada valor
@@ -134,12 +138,15 @@ public class CrearCuenta extends AppCompatActivity {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
             String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto();
+            queue.getCache().clear();
             //Cadena = &status=1&monto=0
 
             // Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    Intent i = new Intent(getApplicationContext(), Ingresar.class);
+                    startActivity(i);
                     // Display the first 500 characters of the response string.
                     //Excelente
                     //textView.setText("Response is: "+response);
@@ -147,6 +154,7 @@ public class CrearCuenta extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Ha ocurrido un error, vuelva a intentarlo mas tarde", Toast.LENGTH_SHORT).show();
                     //textView.setText("That didn't work!");
                 }
             });

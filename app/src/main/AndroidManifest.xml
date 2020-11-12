@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.avocadowallet">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_icon"
@@ -9,7 +11,9 @@
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AvocadoWallet">
-        <activity android:name=".VistaUsuario"></activity>
+        <activity android:name=".TransferirPaso2"></activity>
+        <activity android:name=".Transferir" />
+        <activity android:name=".VistaUsuario" />
         <activity android:name=".CrearCuenta" />
         <activity android:name=".Ingresar" />
         <activity android:name=".MainActivity">

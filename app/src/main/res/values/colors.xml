@@ -10,6 +10,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="color_icon">#4127B5</color>
+    <color name="color_barsesion">#3700B3</color>
+    <color name="color_black_panel">#80000000</color>
+
 
 
 

@@ -76,12 +76,15 @@ public class Ingresar extends AppCompatActivity {
             //Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
             //startActivity(i);
             pgInicioSesion.setVisibility(View.VISIBLE);
-            this.deleteDatabase("");
+
+            //resetconexion();
+
             conexion();
+
         }
     }
 
-
+/*
     public void conexion2(){
 
 
@@ -129,8 +132,46 @@ public class Ingresar extends AppCompatActivity {
 
     }
 
+*/
 
 
+    public void resetconexion(){
+        try {
+            //final TextView textView = (TextView) findViewById(R.id.textView4);
+            // ...
+
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url =Values.URL+"sesion.php?user="+user+"&pwd=14"+pwd;
+
+
+
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e("restConexion", response.toString());
+                    conexion();
+                    }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // textView.setText("That didn't work!");
+                    //pgInicioSesion.setVisibility(View.GONE);
+                    Log.i("error", ""+error.getMessage());
+                }
+            });
+
+            // Add the request to the RequestQueue.
+            //queue.add(stringRequest);
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 1, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            SingletonConnection.getInstance(this).addToRequestQueue(stringRequest);
+
+
+        }catch (Exception e){
+
+        }
+    }
 
     public void conexion(){
         try {
@@ -140,29 +181,28 @@ public class Ingresar extends AppCompatActivity {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
             String url =Values.URL+"sesion.php?user="+user+"&pwd="+pwd;
-
+            queue.getCache().clear();
 
             // Request a string response from the provided URL.
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
+                // Display the first 500 characters of the response string.
 
-                            pgInicioSesion.setVisibility(View.GONE);
-                            if(response.length()<3){
-                                Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-                                //Contraseña o usuario incorrectos
-                            }else {
-                                //JSONObject jsonResponse = new JSONObject(response);
-                                Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
-                                i.putExtra("response", response);
-                                startActivity(i);
-                                response="";
-                            }
+                pgInicioSesion.setVisibility(View.GONE);
+                Log.e("CONEXION", response);
+                if(response.length()<3){
+                    Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                    //Contraseña o usuario incorrectos
+                }else {
+                    Log.e("CONEXION", response.toString());
+                    //JSONObject jsonResponse = new JSONObject(response);
+                    Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
+                    i.putExtra("response", response);
+                    startActivity(i);
+
+                }
 
 
-                        }
-                    }, new Response.ErrorListener() {
+            }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                    // textView.setText("That didn't work!");
@@ -172,15 +212,16 @@ public class Ingresar extends AppCompatActivity {
             });
 
             // Add the request to the RequestQueue.
-            //queue.add(stringRequest);
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            SingletonConnection.getInstance(this).addToRequestQueue(stringRequest);
+            queue.add(stringRequest);
+            //stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            //SingletonConnection.getInstance(this).addToRequestQueue(stringRequest);
 
 
         }catch (Exception e){
 
         }
     }
+
 
 
 
