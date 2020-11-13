@@ -5,4 +5,5 @@ public class Url {
 
     public static final String INICIARSESION = SERVIDOR+"/sesion.php?";
     public static final String INICIARSESION_JSON = SERVIDOR+"/sesionjson.php?json=";
+    public static final String TRANSFERENCIA = SERVIDOR+"/transaccion.php?";
 }

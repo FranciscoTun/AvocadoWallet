@@ -198,6 +198,7 @@ public class Ingresar extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
                     i.putExtra("response", response);
                     startActivity(i);
+                    finish();
 
                 }
 

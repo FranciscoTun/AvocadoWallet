@@ -12,6 +12,7 @@ public class Usuario {
     String Password;
     int status;
     double monto;
+    String Clabe;
     //int edad;
     //Date fecnac;
 
@@ -19,7 +20,7 @@ public class Usuario {
 
     }
 
-    public Usuario(int idUsuario, String username, String name, String lastname, String email, String phone, String password, int status, double monto ) {
+    public Usuario(int idUsuario, String username, String name, String lastname, String email, String phone, String password, int status, double monto, String clabe ) {
         this.idUsuario = idUsuario;
         Username = username;
         Name = name;
@@ -29,6 +30,7 @@ public class Usuario {
         Password = password;
         this.status = status;
         this.monto = monto;
+        this.Clabe = clabe;
 
     }
 
@@ -102,5 +104,13 @@ public class Usuario {
 
     public void setMonto(double monto) {
         this.monto = monto;
+    }
+
+    public String getClabe() {
+        return Clabe;
+    }
+
+    public void setClabe(String clabe) {
+        Clabe = clabe;
     }
 }

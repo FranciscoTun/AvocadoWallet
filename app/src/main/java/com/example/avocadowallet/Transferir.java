@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 public class Transferir extends AppCompatActivity {
+    String valores = "";
     RadioButton RBAvocadoWallet;
     RadioButton RBOther;
     Button btnSigTrans;
@@ -30,7 +31,8 @@ public class Transferir extends AppCompatActivity {
         RBOther = (RadioButton)findViewById(R.id.RBOther);
         btnSigTrans = (Button)findViewById(R.id.BtnSigtTransfer);
         IVBack = (ImageView)findViewById(R.id.IVTransferBack);
-
+        Bundle datos = this.getIntent().getExtras();
+        valores = datos.getString("valores");
         btnSigTrans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +57,7 @@ public class Transferir extends AppCompatActivity {
                     i.putExtra("user","");
                     i.putExtra("pwd","");
                     i.putExtra("seleccion",seleccion);
+                    i.putExtra("valores",valores);
                     startActivity(i);
                 }else {
                     Toast.makeText(getApplicationContext(),"Seleccione una opción",Toast.LENGTH_SHORT).show();

@@ -137,7 +137,7 @@ public class CrearCuenta extends AppCompatActivity {
 
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto();
+            String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto()+"&CLABE="+user.getPhone();
             queue.getCache().clear();
             //Cadena = &status=1&monto=0
 
