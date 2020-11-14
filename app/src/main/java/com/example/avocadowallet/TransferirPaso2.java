@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,6 +39,7 @@ public class TransferirPaso2 extends AppCompatActivity {
     Button btnConfirmTransac;
     ConstraintLayout ConstLayPanelMensaje;
     ImageView IVBack;
+    ProgressBar PBTransfer;
 
     String idUser;
     String User;
@@ -45,9 +48,16 @@ public class TransferirPaso2 extends AppCompatActivity {
     String Fecha;
     String MONTO;
     String PASSW;
+    double MontoEnMiCuenta;
+    double MontoATransferir;
+
+
+    //primero que no te puedas transferir mas de lo que tienes
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transferir_paso2);
         Init();
@@ -61,6 +71,8 @@ public class TransferirPaso2 extends AppCompatActivity {
         btnCancelTransac = (Button)findViewById(R.id.btnCancelTransac);
         btnConfirmTransac = (Button)findViewById(R.id.btnConfirmTransac);
         IVBack = (ImageView)findViewById(R.id.IVBackPaso2);
+        PBTransfer = (ProgressBar)findViewById(R.id.PBTransfer);
+        PBTransfer.setVisibility(View.INVISIBLE);
 
         ConstLayPanelMensaje = (ConstraintLayout)findViewById(R.id.ConstLayPanelMensaje);
         ConstLayPanelMensaje.setVisibility(View.GONE);
@@ -78,7 +90,7 @@ public class TransferirPaso2 extends AppCompatActivity {
             User = json.getString("Username");
             CLABEOrigen = json.getString("CLABE");
             userpaswordreal = json.getString("Password");
-
+            MontoEnMiCuenta = Double.parseDouble(json.getString("monto"));
 
             Date anotherCurDate = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy:HH:mm:ss");
@@ -96,10 +108,22 @@ public class TransferirPaso2 extends AppCompatActivity {
                 if(ETClabe.getText().toString().isEmpty() || ETMontoaTransferir.getText().toString().isEmpty()){
                     Toast.makeText(getApplicationContext(),"No deje campos vacíos",Toast.LENGTH_SHORT).show();
                 }else{
-                    ConstLayPanelMensaje.setVisibility(View.VISIBLE);
-                    ETClabe.setEnabled(false);
-                    ETMontoaTransferir.setEnabled(false);
-                    btnConfirm.setEnabled(false);
+
+                    if(ETClabe.getText().toString().equals(CLABEOrigen)){
+                        Toast.makeText(getApplicationContext(),"La CLABE de Destino no debee ser igual a la CLAVE de Origen",Toast.LENGTH_SHORT).show();
+                    }else {
+                        MontoATransferir = Double.parseDouble(ETMontoaTransferir.getText().toString());
+                        if(MontoATransferir>MontoEnMiCuenta){
+                            Toast.makeText(getApplicationContext(),"No tienes suficiente Dinero",Toast.LENGTH_SHORT).show();
+                        }else {
+                            ConstLayPanelMensaje.setVisibility(View.VISIBLE);
+                            ETClabe.setEnabled(false);
+                            ETMontoaTransferir.setEnabled(false);
+                            btnConfirm.setEnabled(false);
+                        }
+
+                    }
+
                 }
             }
         });
@@ -141,6 +165,7 @@ public class TransferirPaso2 extends AppCompatActivity {
 
     public void validarTransaccion(){
         if(PASSW.equals(userpaswordreal)){
+            PBTransfer.setVisibility(View.VISIBLE);
             conexion();
         }else {
 
@@ -156,14 +181,17 @@ public class TransferirPaso2 extends AppCompatActivity {
 
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = Url.TRANSFERENCIA +"Username="+User+"&Password="+PASSW+"&CLABEOrigen="+CLABEOrigen+"&CLABEDestino="+CLABEDestino+"&monto="+MONTO+"&fecha_mov"+Fecha+"&idUsuario"+idUser;
+            String url = Url.TRANSFERENCIA +"Username="+User+"&Password="+PASSW+"&CLABEOrigen="+CLABEOrigen+"&CLABEDestino="+CLABEDestino+"&monto="+MONTO+"&fecha_mov="+Fecha+"&idUsuario="+idUser;
             queue.getCache().clear();
+            Log.e("URL de la app", url);
             //Cadena = &status=1&monto=0
 
             // Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    Log.e("Lo que devuelve",response);
+                    PBTransfer.setVisibility(View.GONE);
                     Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
                     i.putExtra("response", response);
                     startActivity(i);

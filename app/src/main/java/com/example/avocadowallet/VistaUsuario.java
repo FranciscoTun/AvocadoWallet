@@ -2,6 +2,7 @@ package com.example.avocadowallet;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import android.content.DialogInterface;
@@ -10,11 +11,20 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +40,10 @@ ImageView IVTransfer;
 ImageView IVMigrar;
 ImageView IVInfo;
 ImageView IVConfig;
+Button btnActualizar;
+ProgressBar pgActualizar;
+String userName="";
+String password="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -80,6 +94,9 @@ ImageView IVConfig;
         IVMigrar = (ImageView)findViewById(R.id.IVMigrar);
         IVInfo = (ImageView)findViewById(R.id.IVInfo);
         IVConfig = (ImageView)findViewById(R.id.IVConfig);
+        btnActualizar = (Button)findViewById(R.id.btnActualizar);
+        pgActualizar = (ProgressBar)findViewById(R.id.PGActualizar);
+        pgActualizar.setVisibility(View.GONE);
 
         Bundle datos = this.getIntent().getExtras();
         valores = datos.getString("response");
@@ -88,6 +105,8 @@ ImageView IVConfig;
             JSONObject jobject = new JSONObject(valores);
             JSONObject json = jobject.getJSONArray("datos").getJSONObject(0);
             Log.e("json", json.toString());
+            userName = json.getString("Username");
+            password = json.getString("Password");
             String nombres[] = json.getString("Name").split(" ");
             String apellido [] = json.getString("Lastname").split(" ");
 
@@ -127,14 +146,86 @@ ImageView IVConfig;
         IVConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), config.class);
+                i.putExtra("valores",valores);
+                startActivity(i);
+            }
+        });
 
+        btnActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actualizar();
             }
         });
 
     }
 
-    public void fillSpinner(){
+    public void actualizar(){
+        pgActualizar.setVisibility(View.VISIBLE);
+        conexion();
+    }
 
+
+    public void conexion(){
+        try {
+            //final TextView textView = (TextView) findViewById(R.id.textView4);
+            // ...
+
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url =Values.URL+"sesion.php?user="+userName+"&pwd="+password;
+            queue.getCache().clear();
+
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> {
+                // Display the first 500 characters of the response string.
+
+                pgActualizar.setVisibility(View.GONE);
+                Log.e("CONEXION", response);
+                if(response.length()<3){
+                    Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                    //Contraseña o usuario incorrectos
+                }else {
+                    try {
+                        JSONObject jobject = new JSONObject(response);
+                        JSONObject json = jobject.getJSONArray("datos").getJSONObject(0);
+                        Log.e("json", json.toString());
+                        userName = json.getString("Username");
+                        password = json.getString("Password");
+                        String nombres[] = json.getString("Name").split(" ");
+                        String apellido [] = json.getString("Lastname").split(" ");
+                        valores = response;
+                        //TVNombre.setText(json.getString("Name")+" "+json.getString("Lastname"));
+                        TVNombre.setText(nombres[0]+" "+apellido[0]);
+                        TVMonto.setText(json.getString("monto")+" ETH");
+
+                        //TVNombre.setText(user.getName());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // textView.setText("That didn't work!");
+                    pgActualizar.setVisibility(View.GONE);
+                    Log.i("error", ""+error.getMessage());
+                }
+            });
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+            //stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            //SingletonConnection.getInstance(this).addToRequestQueue(stringRequest);
+
+
+        }catch (Exception e){
+
+        }
     }
 
 }

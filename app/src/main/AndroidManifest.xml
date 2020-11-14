@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AvocadoWallet">
-        <activity android:name=".TransferirPaso2"></activity>
+        <activity android:name=".config"></activity>
+        <activity android:name=".TransferirPaso2" />
         <activity android:name=".Transferir" />
         <activity android:name=".VistaUsuario" />
         <activity android:name=".CrearCuenta" />

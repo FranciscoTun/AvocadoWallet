@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.VectorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +36,9 @@ import java.net.URL;
 import java.sql.SQLData;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.avocadowallet.R.drawable.ic_eye_slash_solid;
+import static com.example.avocadowallet.R.drawable.ic_eye_solid;
+
 public class Ingresar extends AppCompatActivity {
     EditText ETUser;
     EditText ETPwd;
@@ -40,6 +46,11 @@ public class Ingresar extends AppCompatActivity {
     String user ="";
     String pwd ="";
     ProgressBar pgInicioSesion;
+    Button btnViewPass;
+    Drawable drawableEyeSolid;
+    Drawable drawableEyeSlashed;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +68,26 @@ public class Ingresar extends AppCompatActivity {
         ETPwd = (EditText)findViewById(R.id.EdiTextPwsInicio);
         btnIngrersar = (Button)findViewById(R.id.btnIngresar);
         pgInicioSesion = (ProgressBar)findViewById(R.id.progBarInicioSesion);
+        btnViewPass = (Button)findViewById(R.id.btnViewPass);
+        drawableEyeSolid = (Drawable)getDrawable(ic_eye_solid);
+        drawableEyeSlashed = (Drawable)getDrawable(ic_eye_slash_solid);
+
+
+
+        btnViewPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // ETPwd.getInputType();
+                if(ETPwd.getInputType()==145){
+                    ETPwd.setInputType(129);
+                    btnViewPass.setCompoundDrawables(null, null, drawableEyeSolid ,null);
+                }else {
+                    ETPwd.setInputType(145);
+                    btnViewPass.setCompoundDrawables(null, null, drawableEyeSlashed ,null);
+                }
+                Log.e("INPUTYPE",""+ETPwd.getInputType());
+            }
+        });
 
         btnIngrersar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +203,8 @@ public class Ingresar extends AppCompatActivity {
 
         }
     }
+
+
 
     public void conexion(){
         try {

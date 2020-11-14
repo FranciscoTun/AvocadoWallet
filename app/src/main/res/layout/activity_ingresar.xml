@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/purple_pers"
     android:layout_height="match_parent"
+    android:background="@color/purple_pers"
+    android:theme="@style/Theme.AvocadoWallet"
     tools:context=".Ingresar">
 
     <TextView
@@ -23,9 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@color/white"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:text=""
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -45,10 +48,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
         android:ems="10"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/btnViewPass"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -59,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:text="Ingresar"
+        android:theme="@style/Theme.AvocadoWallet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -85,5 +91,15 @@
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnViewPass"
+        android:layout_width="41dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:drawableRight="@drawable/ic_eye_solid"
+        app:layout_constraintBottom_toBottomOf="@+id/EdiTextPwsInicio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/EdiTextPwsInicio" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
