@@ -131,7 +131,8 @@ String password="";
         IVMigrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(), Migrar.class);
+                startActivity(i);
             }
         });
 

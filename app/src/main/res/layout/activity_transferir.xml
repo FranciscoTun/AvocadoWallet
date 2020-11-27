@@ -78,14 +78,14 @@
                 android:id="@+id/RButtonAvocado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/purple_pers"
+                android:textColor="@color/black"
                 android:text="            Avocado Wallet" />
 
             <RadioButton
                 android:id="@+id/RBOther"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/purple_500"
+                android:textColor="@color/black"
                 android:text="            Otra Wallet" />
 
             <ImageView
@@ -105,23 +105,23 @@
         </RadioGroup>
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/IVAvocadoRadio"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="@+id/radioGroup"
             app:layout_constraintTop_toBottomOf="@+id/textView21"
-            app:srcCompat="@drawable/ic_inkavocado" />
+            app:srcCompat="@drawable/ic_inkavocado_black" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/IVWalletRadio"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4"
-            app:srcCompat="@drawable/ic_other_wallet_solid" />
+            app:layout_constraintStart_toStartOf="@+id/IVAvocadoRadio"
+            app:layout_constraintTop_toBottomOf="@+id/IVAvocadoRadio"
+            app:srcCompat="@drawable/ic_other_wallet_solid_black" />
 
         <Button
             android:id="@+id/BtnSigtTransfer"

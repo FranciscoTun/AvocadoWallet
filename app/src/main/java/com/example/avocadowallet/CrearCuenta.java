@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ public class CrearCuenta extends AppCompatActivity {
     EditText ETPassword;
     EditText ETConfirmpass;
     Usuario user;
+    ProgressBar PBcreandocuenta;
+    CheckBox checkBoxAcuerdo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +64,6 @@ public class CrearCuenta extends AppCompatActivity {
         ETNombre = (EditText)findViewById(R.id.EdiTexNombre);
         ETApellido = (EditText)findViewById(R.id.EdiTextApellidos);
 
-
-
-
-
-
         //CLIC LISTENERS
         imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +71,6 @@ public class CrearCuenta extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,18 +84,25 @@ public class CrearCuenta extends AppCompatActivity {
                     ETPhone = (EditText)findViewById(R.id.EdiTextPhone);
                     ETPassword = (EditText)findViewById(R.id.EdiTextPass);
                     ETConfirmpass = (EditText)findViewById(R.id.EdiTextConfirmPass);
+                    PBcreandocuenta = (ProgressBar)findViewById(R.id.pbCreandoCuenta);
+                    checkBoxAcuerdo = (CheckBox)findViewById(R.id.checkBoxAcuerdo);
 
                     btnCrearCuenta = (Button)findViewById(R.id.btnCrearCuenta);
                     btnCrearCuenta.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
-                                Toast.makeText(getApplicationContext(), "Creando Cuenta", Toast.LENGTH_SHORT).show();
-                                CrearCuenta();
+                                if(checkBoxAcuerdo.isChecked()){
+                                    Toast.makeText(getApplicationContext(), "Creando Cuenta", Toast.LENGTH_SHORT).show();
+                                    CrearCuenta();
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Acepte los términos y condiciones para poder continuar", Toast.LENGTH_LONG).show();
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            ///En este apartado se crea un nuevo usuario y se manda a la base de datos
+
                         }
                     });
 
@@ -105,9 +110,6 @@ public class CrearCuenta extends AppCompatActivity {
 
             }
         });
-
-
-
 
     }
 
@@ -122,48 +124,37 @@ public class CrearCuenta extends AppCompatActivity {
         user.setPhone(ETPhone.getText().toString());
         user.setStatus(1);
         user.setMonto(0);
-
-
         conexion();
-
     }
 
 
 
     public void conexion(){
         try {
-            //final TextView textView = (TextView) findViewById(R.id.textView4);
-            // ...
-
+            PBcreandocuenta.setVisibility(View.VISIBLE);
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
             String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto()+"&CLABE="+user.getPhone();
+            Log.e("URLO", url);
             queue.getCache().clear();
-            //Cadena = &status=1&monto=0
-
             // Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    PBcreandocuenta.setVisibility(View.GONE);
                     Intent i = new Intent(getApplicationContext(), Ingresar.class);
                     startActivity(i);
-                    // Display the first 500 characters of the response string.
-                    //Excelente
-                    //textView.setText("Response is: "+response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), "Ha ocurrido un error, vuelva a intentarlo mas tarde", Toast.LENGTH_SHORT).show();
-                    //textView.setText("That didn't work!");
                 }
             });
-
             // Add the request to the RequestQueue.
             queue.add(stringRequest);
-
         }catch (Exception e){
-
+            Log.e("Error", e.getMessage().toString());
         }
     }
 }

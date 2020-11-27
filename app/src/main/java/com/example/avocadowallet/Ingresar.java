@@ -51,7 +51,6 @@ public class Ingresar extends AppCompatActivity {
     Drawable drawableEyeSlashed;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -69,8 +68,9 @@ public class Ingresar extends AppCompatActivity {
         btnIngrersar = (Button)findViewById(R.id.btnIngresar);
         pgInicioSesion = (ProgressBar)findViewById(R.id.progBarInicioSesion);
         btnViewPass = (Button)findViewById(R.id.btnViewPass);
-        drawableEyeSolid = (Drawable)getDrawable(ic_eye_solid);
-        drawableEyeSlashed = (Drawable)getDrawable(ic_eye_slash_solid);
+        btnViewPass.setBackgroundResource(ic_eye_solid);
+        //drawableEyeSolid = getResources(R.drawable.ic_eye_solid);
+        //drawableEyeSlashed = (Drawable)getDrawable(ic_eye_slash_solid);
 
 
 
@@ -80,10 +80,13 @@ public class Ingresar extends AppCompatActivity {
                // ETPwd.getInputType();
                 if(ETPwd.getInputType()==145){
                     ETPwd.setInputType(129);
-                    btnViewPass.setCompoundDrawables(null, null, drawableEyeSolid ,null);
+                    //btnViewPass.setCompoundDrawables(null, null, drawableEyeSolid ,null);
+                    btnViewPass.setBackgroundResource(ic_eye_solid);
+
                 }else {
                     ETPwd.setInputType(145);
-                    btnViewPass.setCompoundDrawables(null, null, drawableEyeSlashed ,null);
+                    btnViewPass.setBackgroundResource(ic_eye_slash_solid);
+                    //btnViewPass.setCompoundDrawables(null, null, drawableEyeSlashed ,null);
                 }
                 Log.e("INPUTYPE",""+ETPwd.getInputType());
             }

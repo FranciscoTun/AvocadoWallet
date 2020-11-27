@@ -74,13 +74,8 @@ public class config extends AppCompatActivity {
         btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent GotoB = new Intent(config.this,VistaUsuario.class);
-                startActivityForResult(GotoB,1);
-                Intent GotoC = new Intent(config.this,VistaUsuario.class);
-                startActivityForResult(GotoB,1);
-                finish();
-                Intent i = new Intent(getApplicationContext(), Ingresar.class);
-                startActivity(i);
+                finishAffinity();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }

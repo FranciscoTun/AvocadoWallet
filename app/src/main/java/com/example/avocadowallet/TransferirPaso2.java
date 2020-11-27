@@ -156,10 +156,6 @@ public class TransferirPaso2 extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
 
 
@@ -192,6 +188,9 @@ public class TransferirPaso2 extends AppCompatActivity {
                 public void onResponse(String response) {
                     Log.e("Lo que devuelve",response);
                     PBTransfer.setVisibility(View.GONE);
+
+                    Transferir.transfer.finish();
+                    finish();
                     Intent i = new Intent(getApplicationContext(), VistaUsuario.class);
                     i.putExtra("response", response);
                     startActivity(i);
