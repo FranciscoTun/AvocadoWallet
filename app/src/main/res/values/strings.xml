@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Avocado Wallet</string>
+
+    <string-array name="array_cambio">
+        <item>ETH</item>
+        <item>MXN</item>
+        <item>USD</item>
+    </string-array>
 </resources>

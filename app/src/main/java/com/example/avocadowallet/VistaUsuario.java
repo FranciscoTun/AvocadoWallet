@@ -2,7 +2,6 @@ package com.example.avocadowallet;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import android.content.DialogInterface;
@@ -11,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,9 +25,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.avocadowallet.Clases.statics.Url;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -44,6 +48,9 @@ Button btnActualizar;
 ProgressBar pgActualizar;
 String userName="";
 String password="";
+double montoETH;
+double montoMXN;
+double montoUSD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -113,17 +120,23 @@ String password="";
             //TVNombre.setText(json.getString("Name")+" "+json.getString("Lastname"));
             TVNombre.setText(nombres[0]+" "+apellido[0]);
             TVMonto.setText(json.getString("monto")+" ETH");
-
+            montoETH = Double.parseDouble(json.getString("monto"));
             //TVNombre.setText(user.getName());
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        montoMXN = convertEtherTo("MXN", montoETH);
+        montoUSD = convertEtherTo("USD", montoETH);
 
         IVTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), Transferir.class);
                 i.putExtra("valores",valores);
+                i.putExtra("ETH", montoETH);
+                i.putExtra("MXN", montoMXN);
+                i.putExtra("USD", montoUSD);
                 startActivity(i);
             }
         });
@@ -159,6 +172,38 @@ String password="";
                 actualizar();
             }
         });
+
+
+
+        SpinCambio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e("Item Selected::: ",SpinCambio.getSelectedItem().toString());
+                if(SpinCambio.getSelectedItem().toString().equals("ETH")){
+
+                }else {
+                    convertEtherTo(SpinCambio.getSelectedItem().toString(), montoETH);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.e("Item Selected::: ","NADA SELECCIONADO");
+            }
+        });
+
+
+        /*
+        SpinCambio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Crear el evento del Spinner al seleccionar el elemento llamar al metoso que le pega a la api
+                //convertEtherTo(SpinCambio.getSelectedItem().toString());
+            }
+        });*/
+
+
 
     }
 
@@ -227,6 +272,77 @@ String password="";
         }catch (Exception e){
 
         }
+    }
+
+
+
+    public double convertEtherTo(String Moneda, double eth){
+         AtomicReference<Double> cambio = new AtomicReference<>((double) 0);
+                try {
+                    //final TextView textView = (TextView) findViewById(R.id.textView4);
+                    // ...
+
+                    pgActualizar.setVisibility(View.VISIBLE);
+                    // Instantiate the RequestQueue.
+                    RequestQueue queue = Volley.newRequestQueue(this);
+                    String url = Url.CONVERTIRETHER;
+                    url+="vs_currency="+Moneda;
+                    url+="&ids="+"ethereum";
+                    url+="&order="+"market_cap_desc";
+                    url+="&per_page="+"100";
+                    url+="&page="+"1";
+                    url+="&sparkline="+"false";
+
+                    queue.getCache().clear();
+
+                    // Request a string response from the provided URL.
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, url, (String response) -> {
+                        // Display the first 500 characters of the response string.
+                        double change=0;
+                        pgActualizar.setVisibility(View.GONE);
+                        Log.e("CONEXION", response);
+                        if(response.length()<3){
+                            Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                            //Contraseña o usuario incorrectos
+                        }else {
+                            try {
+
+                                //JSONObject jobject = new JSONObject(response);
+                                JSONArray jarray = new JSONArray(response);
+                                JSONObject json = jarray.getJSONObject(0);
+                                String valorEnMoneda = json.getString("current_price");
+
+                                change = Double.parseDouble(valorEnMoneda)*montoETH;
+                                TVMonto.setText(change+" "+SpinCambio.getSelectedItem());
+                                Log.e("json length", json.toString());
+
+                            } catch (JSONException e) {
+                                Log.e("json", "NEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEL");
+                                e.printStackTrace();
+                            }
+
+                        }
+                        cambio.set(change);
+
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // textView.setText("That didn't work!");
+                            pgActualizar.setVisibility(View.GONE);
+                            Log.i("error", ""+error.getMessage());
+                        }
+                    });
+
+                    // Add the request to the RequestQueue.
+                    queue.add(stringRequest);
+                    //stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    //SingletonConnection.getInstance(this).addToRequestQueue(stringRequest);
+
+
+                }catch (Exception e){
+
+                }
+                return cambio.get();
     }
 
 }
