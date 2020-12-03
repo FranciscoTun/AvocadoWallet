@@ -121,6 +121,7 @@ double montoUSD;
             TVNombre.setText(nombres[0]+" "+apellido[0]);
             TVMonto.setText(json.getString("monto")+" ETH");
             montoETH = Double.parseDouble(json.getString("monto"));
+            Log.e("MONTO::", ""+montoETH);
             //TVNombre.setText(user.getName());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -180,9 +181,9 @@ double montoUSD;
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.e("Item Selected::: ",SpinCambio.getSelectedItem().toString());
                 if(SpinCambio.getSelectedItem().toString().equals("ETH")){
-
+                    TVMonto.setText(""+montoETH+" ETH");
                 }else {
-                    convertEtherTo(SpinCambio.getSelectedItem().toString(), montoETH);
+                    getCambioUpdated(SpinCambio.getSelectedItem().toString(), montoETH);
                 }
 
             }
@@ -245,6 +246,8 @@ double montoUSD;
                         //TVNombre.setText(json.getString("Name")+" "+json.getString("Lastname"));
                         TVNombre.setText(nombres[0]+" "+apellido[0]);
                         TVMonto.setText(json.getString("monto")+" ETH");
+                        montoETH = Double.parseDouble(json.getString("monto"));
+
 
                         //TVNombre.setText(user.getName());
                     } catch (JSONException e) {
@@ -272,6 +275,76 @@ double montoUSD;
         }catch (Exception e){
 
         }
+    }
+
+
+    public void getCambioUpdated(String Moneda, double eth) {
+
+        try {
+            //final TextView textView = (TextView) findViewById(R.id.textView4);
+            // ...
+
+            pgActualizar.setVisibility(View.VISIBLE);
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = Url.CONVERTIRETHER;
+            url += "vs_currency=" + Moneda;
+            url += "&ids=" + "ethereum";
+            url += "&order=" + "market_cap_desc";
+            url += "&per_page=" + "100";
+            url += "&page=" + "1";
+            url += "&sparkline=" + "false";
+
+            queue.getCache().clear();
+
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, (String response) -> {
+                // Display the first 500 characters of the response string.
+                double change = 0;
+                pgActualizar.setVisibility(View.GONE);
+                Log.e("CONEXION", response);
+                if (response.length() < 3) {
+                    Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                    //Contraseña o usuario incorrectos
+                } else {
+                    try {
+
+                        //JSONObject jobject = new JSONObject(response);
+                        JSONArray jarray = new JSONArray(response);
+                        JSONObject json = jarray.getJSONObject(0);
+                        String valorEnMoneda = json.getString("current_price");
+
+                        change = Double.parseDouble(valorEnMoneda) * montoETH;
+                        TVMonto.setText(change + " " + SpinCambio.getSelectedItem());
+                        Log.e("json length", json.toString());
+
+                    } catch (JSONException e) {
+
+                        e.printStackTrace();
+                    }
+
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // textView.setText("That didn't work!");
+                    pgActualizar.setVisibility(View.GONE);
+                    Log.i("error", "" + error.getMessage());
+                }
+            });
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+            //stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            //SingletonConnection.getInstance(this).addToRequestQueue(stringRequest);
+
+
+        } catch (Exception e) {
+
+        }
+
     }
 
 
@@ -313,11 +386,11 @@ double montoUSD;
                                 String valorEnMoneda = json.getString("current_price");
 
                                 change = Double.parseDouble(valorEnMoneda)*montoETH;
-                                TVMonto.setText(change+" "+SpinCambio.getSelectedItem());
+
                                 Log.e("json length", json.toString());
 
                             } catch (JSONException e) {
-                                Log.e("json", "NEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEL");
+
                                 e.printStackTrace();
                             }
 

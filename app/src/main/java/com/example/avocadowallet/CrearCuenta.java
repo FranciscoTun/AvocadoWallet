@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.avocadowallet.Clases.Usuario;
+import com.example.avocadowallet.Clases.statics.Url;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +46,11 @@ public class CrearCuenta extends AppCompatActivity {
     Usuario user;
     ProgressBar PBcreandocuenta;
     CheckBox checkBoxAcuerdo;
+
+    String BlockPrivated;
+    String BlockPublic;
+    String BlockAddress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,17 +130,58 @@ public class CrearCuenta extends AppCompatActivity {
         user.setPhone(ETPhone.getText().toString());
         user.setStatus(1);
         user.setMonto(0);
-        conexion();
+        crearUserBlockchain();
+
+    }
+
+
+    public void crearUserBlockchain(){
+        try {
+            PBcreandocuenta.setVisibility(View.VISIBLE);
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = Url.CREARUSERBLOCKCHAIN;
+            //String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto()+"&CLABE="+user.getPhone();
+            Log.e("URLO", url);
+            queue.getCache().clear();
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject json = new JSONObject(response);
+                        BlockPrivated = json.getString("private");
+                        BlockPublic = json.getString("public");
+                        BlockAddress = "0x"+json.getString("address");
+
+                        conexion();
+
+                    }catch (Exception e){
+                        Log.e("Error atrapado", e.getMessage());
+                    }
+                    Log.e("Response blockchain", response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Ha ocurrido un error, vuelva a intentarlo mas tarde", Toast.LENGTH_SHORT).show();
+                }
+            });
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+        }catch (Exception e){
+            Log.e("Error", e.getMessage().toString());
+        }
     }
 
 
 
     public void conexion(){
         try {
-            PBcreandocuenta.setVisibility(View.VISIBLE);
+
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto()+"&CLABE="+user.getPhone();
+            String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto()+"&CLABE="+user.getPhone()+"&private="+BlockPrivated+"&public="+BlockPublic+"&address="+BlockAddress;
             Log.e("URLO", url);
             queue.getCache().clear();
             // Request a string response from the provided URL.
@@ -149,12 +196,13 @@ public class CrearCuenta extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), "Ha ocurrido un error, vuelva a intentarlo mas tarde", Toast.LENGTH_SHORT).show();
+                    Log.e("VolleyError", error.getMessage());
                 }
             });
             // Add the request to the RequestQueue.
             queue.add(stringRequest);
         }catch (Exception e){
-            Log.e("Error", e.getMessage().toString());
+            Log.e("Exception Try conexion() Error", e.getMessage().toString());
         }
     }
 }
