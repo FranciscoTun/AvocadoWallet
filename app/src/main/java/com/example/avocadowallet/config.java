@@ -24,6 +24,10 @@ public class config extends AppCompatActivity {
     TextView TVPersonaNombre;
     TextView TVPersonaApellidos;
     TextView TVPersonaCLABE;
+    TextView TVBlockPrivate;
+    TextView TVBlockPublic;
+    TextView TVBlockAddress;
+
     Button btnCerrarSesion;
     String valores="";
     @Override
@@ -42,6 +46,10 @@ public class config extends AppCompatActivity {
         TVPersonaApellidos = (TextView)findViewById(R.id.TVPersonaApellidos);
         TVPersonaCLABE = (TextView)findViewById(R.id.TVPersonaClabe);
 
+        TVBlockPrivate = (TextView)findViewById(R.id.TVPersonaBlockPrivate);
+        TVBlockPublic = (TextView)findViewById(R.id.TVPersonaBlockPublic);
+        TVBlockAddress = (TextView)findViewById(R.id.TVPersonaBlockAddress);
+
         btnCerrarSesion = (Button)findViewById(R.id.btnCerrarSesion);
         Bundle datos = this.getIntent().getExtras();
         valores = datos.getString("valores");
@@ -59,6 +67,10 @@ public class config extends AppCompatActivity {
             TVPersonaNombre.setText(json.getString("Name"));
             TVPersonaApellidos.setText(json.getString("Lastname"));
             TVPersonaCLABE.setText(json.getString("Phone"));
+            TVBlockPrivate.setText(json.getString("private"));
+            TVBlockPublic.setText(json.getString("public"));
+            TVBlockAddress.setText(json.getString("address"));
+
 
         } catch (JSONException e) {
             e.printStackTrace();

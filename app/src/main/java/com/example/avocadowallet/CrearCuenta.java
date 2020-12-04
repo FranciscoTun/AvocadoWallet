@@ -51,6 +51,7 @@ public class CrearCuenta extends AppCompatActivity {
     String BlockPublic;
     String BlockAddress;
 
+    Boolean validado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +99,51 @@ public class CrearCuenta extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
+                                if(!ETEmail.getText().toString().isEmpty() && !ETConfirmEmail.getText().toString().isEmpty()){
+
+                                    if(ETEmail.getText().toString().equals(ETConfirmEmail.getText().toString())){
+                                        validado = true;
+                                    }else {
+                                        Toast.makeText(getApplicationContext(), "Los correos no coinciden", Toast.LENGTH_SHORT).show();
+                                        validado = false;
+                                    }
+                                }else {
+                                    //Toast.makeText(getApplicationContext(), "No deje campos vacíos", Toast.LENGTH_SHORT).show();
+                                    validado=false;
+                                }
+
+
+                                if(!ETPhone.getText().toString().isEmpty()){
+                                    validado = true;
+                                }else{
+                                    validado = false;
+                                }
+
+                                if(!ETPassword.getText().toString().isEmpty() && !ETConfirmpass.getText().toString().isEmpty()){
+                                    if(ETPassword.getText().toString().equals(ETConfirmpass.getText().toString())){
+                                        validado = true;
+                                    }else {
+                                        Toast.makeText(getApplicationContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                                        validado = false;
+                                    }
+                                }else {
+                                    //Toast.makeText(getApplicationContext(), "No deje", Toast.LENGTH_SHORT).show();
+                                    validado = false;
+                                }
+
+
+
+
+
                                 if(checkBoxAcuerdo.isChecked()){
-                                    Toast.makeText(getApplicationContext(), "Creando Cuenta", Toast.LENGTH_SHORT).show();
-                                    CrearCuenta();
+                                    if(validado){
+                                        Toast.makeText(getApplicationContext(), "Creando Cuenta", Toast.LENGTH_SHORT).show();
+
+                                        CrearCuenta();
+                                    }else{
+                                        Toast.makeText(getApplicationContext(), "Llene correctamente los campos para poder continuar", Toast.LENGTH_LONG).show();
+                                    }
+
                                 }else{
                                     Toast.makeText(getApplicationContext(), "Acepte los términos y condiciones para poder continuar", Toast.LENGTH_LONG).show();
                                 }
