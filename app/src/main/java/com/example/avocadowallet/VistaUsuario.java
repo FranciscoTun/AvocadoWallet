@@ -64,7 +64,7 @@ double montoUSD;
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Toast.makeText(getApplicationContext(), "Salir", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Salir", Toast.LENGTH_SHORT).show();
         mostrarDialogo();
     }
 

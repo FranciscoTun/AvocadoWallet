@@ -103,7 +103,7 @@ public class Ingresar extends AppCompatActivity {
         btnViewPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAddress(v);
+               //getAddress(v);
                // ETPwd.getInputType();
                 if(ETPwd.getInputType()==145){
                     ETPwd.setInputType(129);

@@ -185,7 +185,7 @@ public class CrearCuenta extends AppCompatActivity {
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = Url.CREARUSERBLOCKCHAIN;
             //String url =Values.URL+"crearusuario.php?idUsuario=null&Username="+user.getUsername()+"&Name="+user.getName()+"&Lastname="+user.getLastname()+"&Email="+user.getEmail()+"&Phone="+user.getPhone()+"&Password="+user.getPassword()+"&status="+user.getStatus()+"&monto="+user.getMonto()+"&CLABE="+user.getPhone();
-            Log.e("URLO", url);
+            Log.e("URL", url);
             queue.getCache().clear();
             // Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
