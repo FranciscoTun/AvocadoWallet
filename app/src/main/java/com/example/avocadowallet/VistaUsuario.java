@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static android.app.PendingIntent.getActivity;
@@ -48,6 +49,7 @@ Button btnActualizar;
 ProgressBar pgActualizar;
 String userName="";
 String password="";
+String userId;
 double montoETH;
 double montoMXN;
 double montoUSD;
@@ -114,6 +116,8 @@ double montoUSD;
             Log.e("json", json.toString());
             userName = json.getString("Username");
             password = json.getString("Password");
+            userId = json.getString("idUsuario");
+
             String nombres[] = json.getString("Name").split(" ");
             String apellido [] = json.getString("Lastname").split(" ");
 
@@ -127,8 +131,11 @@ double montoUSD;
             e.printStackTrace();
         }
 
-        montoMXN = convertEtherTo("MXN", montoETH);
-        montoUSD = convertEtherTo("USD", montoETH);
+        DecimalFormat df = new DecimalFormat("#.00");
+
+
+        montoMXN = Double.parseDouble(df.format(convertEtherTo("MXN", montoETH)));
+        montoUSD = Double.parseDouble(df.format(convertEtherTo("USD", montoETH)));
 
         IVTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +160,9 @@ double montoUSD;
         IVInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(getApplicationContext(), Transacciones.class);
+                i.putExtra("userId",userId);
+                startActivity(i);
             }
         });
 
@@ -314,7 +323,13 @@ double montoUSD;
                         JSONObject json = jarray.getJSONObject(0);
                         String valorEnMoneda = json.getString("current_price");
 
-                        change = Double.parseDouble(valorEnMoneda) * montoETH;
+                        DecimalFormat df = new DecimalFormat("#.00");
+
+
+
+
+
+                        change = Double.parseDouble(df.format(Double.parseDouble(valorEnMoneda) * montoETH));
                         TVMonto.setText(change + " " + SpinCambio.getSelectedItem());
                         Log.e("json length", json.toString());
 
@@ -387,7 +402,7 @@ double montoUSD;
 
                                 change = Double.parseDouble(valorEnMoneda)*montoETH;
 
-                                Log.e("json length", json.toString());
+                                Log.e("change", ""+change);
 
                             } catch (JSONException e) {
 

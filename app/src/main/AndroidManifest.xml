@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AvocadoWallet">
-        <activity android:name=".Migrar"></activity>
+        <activity android:name=".Transacciones"></activity>
+        <activity android:name=".Migrar" />
         <activity android:name=".config" />
         <activity android:name=".TransferirPaso2" />
         <activity android:name=".Transferir" />

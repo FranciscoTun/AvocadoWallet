@@ -9,6 +9,7 @@ public class Url {
     public static final String INICIARSESION = SERVIDOR+"/sesion.php?";
     public static final String INICIARSESION_JSON = SERVIDOR+"/sesionjson.php?json=";
     public static final String TRANSFERENCIA = SERVIDOR+"/transaccion.php?";
+    public static final String OBTENERTRANSFERENCIAS = SERVIDOR+"/getTransacciones.php?";
     public static final String CONVERTIRETHER = "https://api.coingecko.com/api/v3/coins/markets?";
 
 
